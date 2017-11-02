@@ -18,7 +18,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
                 case WRITER_IDLE:
                     PingMsg pingMsg=new PingMsg();
                     ctx.writeAndFlush(pingMsg);
-                    System.out.println("send ping to server----------");
+                    System.out.println("send ping to server---------");
                     break;
                 default:
                     break;
