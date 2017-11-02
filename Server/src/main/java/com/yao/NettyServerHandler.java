@@ -6,8 +6,10 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.util.ReferenceCountUtil;
 
+import java.nio.charset.Charset;
+
 /**
- * Created by yaozb on 15-4-11.
+ * Created by haoxy on 17-10-31.
  */
 public class NettyServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
     @Override
@@ -16,7 +18,6 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
     }
     @Override
     protected void messageReceived(ChannelHandlerContext channelHandlerContext, BaseMsg baseMsg) throws Exception {
-
         if(MsgType.LOGIN.equals(baseMsg.getType())){
             LoginMsg loginMsg=(LoginMsg)baseMsg;
             if("robin".equals(loginMsg.getUserName())&&"yao".equals(loginMsg.getPassword())){
@@ -41,7 +42,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
                 //收到客户端的请求
                 AskMsg askMsg=(AskMsg)baseMsg;
                 if("authToken".equals(askMsg.getParams().getAuth())){
-                    ReplyServerBody replyBody=new ReplyServerBody("server info $$$$ !!!");
+                    ReplyServerBody replyBody=new ReplyServerBody("server info $$$$ !!!收到客户端的请求");
                     ReplyMsg replyMsg=new ReplyMsg();
                     replyMsg.setBody(replyBody);
                     NettyChannelMap.get(askMsg.getClientId()).writeAndFlush(replyMsg);
@@ -51,7 +52,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
                 //收到客户端回复
                 ReplyMsg replyMsg=(ReplyMsg)baseMsg;
                 ReplyClientBody clientBody=(ReplyClientBody)replyMsg.getBody();
-                System.out.println("receive client msg: "+clientBody.getClientInfo());
+                System.out.println("收到客户端回复 - receive client msg: "+clientBody.getClientInfo());
             }break;
             default:break;
         }

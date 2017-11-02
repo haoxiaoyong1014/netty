@@ -40,18 +40,21 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
                 System.out.println("receive ping from server----------");
             }break;
             case ASK:{
+
                 ReplyClientBody replyClientBody=new ReplyClientBody("client info **** !!!");
                 ReplyMsg replyMsg=new ReplyMsg();
                 replyMsg.setBody(replyClientBody);
                 channelHandlerContext.writeAndFlush(replyMsg);
             }break;
             case REPLY:{
+                //收到服务端回复
                 ReplyMsg replyMsg=(ReplyMsg)baseMsg;
                 ReplyServerBody replyServerBody=(ReplyServerBody)replyMsg.getBody();
-                System.out.println("receive client msg: "+replyServerBody.getServerInfo());
+                System.out.println("- receive client msg: "+replyServerBody.getServerInfo());
             }
             default:break;
         }
         ReferenceCountUtil.release(msgType);
+
     }
 }
